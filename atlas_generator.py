@@ -2,6 +2,7 @@ import json
 import math
 import os
 from typing import Optional
+from pathlib import Path
 
 from PIL import Image
 
@@ -647,6 +648,10 @@ def process_block(block: str, data: any) -> None:
 
 
 def main() -> None:
+    Path("output/assets/minecraft/models/block").mkdir(parents=True, exist_ok=True)
+    Path("output/assets/minecraft/textures/block").mkdir(parents=True, exist_ok=True)
+    Path("output/assets/minecraft/textures/effect").mkdir(parents=True, exist_ok=True)
+
     blocks = os.listdir("data/block_models")
 
     for block in blocks:
