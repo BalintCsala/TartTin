@@ -1,6 +1,6 @@
 # Tart Tin
 
-Resourcepack generator for https://github.com/BalintCsala/TartTin
+Resourcepack generator for https://github.com/BalintCsala/VanillaPuddingTart
 
 Supports all LabPBR format resource packs
 
