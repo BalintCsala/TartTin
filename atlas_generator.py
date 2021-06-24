@@ -359,7 +359,7 @@ def encode_texture_data(texcoord: tuple[int, int], type_id: int) -> Image:
     return Image.new(mode="RGBA", size=(16, 16), color=(r, g, b, 255))
 
 
-def put_block_into_atlas(block: str, type_id: int, textures: list[str]) -> None:
+def put_block_into_atlas(model_data: any, block: str, type_id: int, textures: list[str]) -> None:
     global texture_count, replacement_block_model_template
 
     # If the textures required for this block don't fit into the current line, go immediately to the next line
@@ -375,6 +375,8 @@ def put_block_into_atlas(block: str, type_id: int, textures: list[str]) -> None:
 
     replacement = encode_texture_data((start_x, start_y), type_id)
     replacement.save(f"output/assets/minecraft/textures/block/{block_name}_data.png")
+    with open(f"output/assets/minecraft/models/item/{block_name}.json", "w") as item_file:
+        json.dump(model_data, item_file)
 
     model_replacement_content = replacement_block_model_template.replace("$$BLOCK_NAME$$", block_name)
     model_replacement_file = open(f"output/assets/minecraft/models/block/{block}", "w")
@@ -461,187 +463,187 @@ def process_block(block: str, data: any) -> None:
         return
 
     if block == "beacon.json":
-        put_block_into_atlas(block, TYPES["beacon"], ["block/glass", "block/obsidian", "block/beacon"])
+        put_block_into_atlas(data, block, TYPES["beacon"], ["block/glass", "block/obsidian", "block/beacon"])
     elif block == "big_dripleaf.json":
-        put_block_into_atlas(block, TYPES["big_dripleaf"], ["block/big_dripleaf_top", "block/big_dripleaf_stem",
-                                                            "block/big_dripleaf_side",
-                                                            "block/big_dripleaf_tip"])
+        put_block_into_atlas(data, block, TYPES["big_dripleaf"], ["block/big_dripleaf_top", "block/big_dripleaf_stem",
+                                                                  "block/big_dripleaf_side",
+                                                                  "block/big_dripleaf_tip"])
     elif block == "big_dripleaf_full_tilt.json":
-        put_block_into_atlas(block, TYPES["big_dripleaf_full_tilt"], ["block/big_dripleaf_top",
-                                                                      "block/big_dripleaf_stem",
-                                                                      "block/big_dripleaf_side",
-                                                                      "block/big_dripleaf_tip"])
+        put_block_into_atlas(data, block, TYPES["big_dripleaf_full_tilt"], ["block/big_dripleaf_top",
+                                                                            "block/big_dripleaf_stem",
+                                                                            "block/big_dripleaf_side",
+                                                                            "block/big_dripleaf_tip"])
     elif block == "big_dripleaf_partial_tilt.json":
-        put_block_into_atlas(block, TYPES["big_dripleaf_partial_tilt"], ["block/big_dripleaf_top",
-                                                                         "block/big_dripleaf_stem",
-                                                                         "block/big_dripleaf_side",
-                                                                         "block/big_dripleaf_tip"])
+        put_block_into_atlas(data, block, TYPES["big_dripleaf_partial_tilt"], ["block/big_dripleaf_top",
+                                                                               "block/big_dripleaf_stem",
+                                                                               "block/big_dripleaf_side",
+                                                                               "block/big_dripleaf_tip"])
     elif block == "big_dripleaf_stem.json":
-        put_block_into_atlas(block, TYPES["big_dripleaf_stem"], ["block/big_dripleaf_stem"])
+        put_block_into_atlas(data, block, TYPES["big_dripleaf_stem"], ["block/big_dripleaf_stem"])
     elif block == "cactus.json":
-        put_block_into_atlas(block, TYPES["cactus"], ["block/cactus_bottom", "block/cactus_top",
-                                                      "block/cactus_side"])
+        put_block_into_atlas(data, block, TYPES["cactus"], ["block/cactus_bottom", "block/cactus_top",
+                                                            "block/cactus_side"])
     elif block == "campfire_off.json":
-        put_block_into_atlas(block, TYPES["campfire_off"], ["block/campfire_log"])
+        put_block_into_atlas(data, block, TYPES["campfire_off"], ["block/campfire_log"])
     elif block == "chain.json":
-        put_block_into_atlas(block, TYPES["chain"], ["block/chain"])
+        put_block_into_atlas(data, block, TYPES["chain"], ["block/chain"])
     elif block == "chorus_plant.json":
-        put_block_into_atlas(block, TYPES["chorus_plant"], ["block/chorus_plant"])
+        put_block_into_atlas(data, block, TYPES["chorus_plant"], ["block/chorus_plant"])
     elif block == "composter.json":
-        put_block_into_atlas(block, TYPES["composter"], ["block/composter_top", "block/composter_bottom",
-                                                         "block/composter_side"])
+        put_block_into_atlas(data, block, TYPES["composter"], ["block/composter_top", "block/composter_bottom",
+                                                               "block/composter_side"])
     elif block == "dead_sea_pickle.json" or block == "sea_pickle.json":
-        put_block_into_atlas(block, TYPES["sea_pickle"], ["block/sea_pickle"])
+        put_block_into_atlas(data, block, TYPES["sea_pickle"], ["block/sea_pickle"])
     elif block == "dirt_path.json":
-        put_block_into_atlas(block, TYPES["dirt_path"], ["block/dirt_path_top", "block/dirt_path_side",
-                                                         "block/dirt"])
+        put_block_into_atlas(data, block, TYPES["dirt_path"], ["block/dirt_path_top", "block/dirt_path_side",
+                                                               "block/dirt"])
     elif block == "dragon_egg.json":
-        put_block_into_atlas(block, TYPES["dragon_egg"], ["block/dragon_egg"])
+        put_block_into_atlas(data, block, TYPES["dragon_egg"], ["block/dragon_egg"])
     elif block == "dried_kelp_block.json":
-        put_block_into_atlas(block, TYPES["dried_kelp_block"],
-                             ["block/dried_kelp_bottom", "block/dried_kelp_top",
-                              "block/dried_kelp_side"])
+        put_block_into_atlas(data, block, TYPES["dried_kelp_block"], ["block/dried_kelp_bottom", "block/dried_kelp_top",
+                                                                      "block/dried_kelp_side"])
     elif block == "enchanting_table.json":
-        put_block_into_atlas(block, TYPES["enchanting_table"], ["block/enchanting_table_bottom",
-                                                                "block/enchanting_table_top",
-                                                                "block/enchanting_table_side"])
+        put_block_into_atlas(data, block, TYPES["enchanting_table"], ["block/enchanting_table_bottom",
+                                                                      "block/enchanting_table_top",
+                                                                      "block/enchanting_table_side"])
     elif block == "end_portal_frame.json":
-        put_block_into_atlas(block, TYPES["end_portal_frame"], ["block/end_stone",
-                                                                "block/end_portal_frame_top",
-                                                                "block/end_portal_frame_side"])
+        put_block_into_atlas(data, block, TYPES["end_portal_frame"], ["block/end_stone",
+                                                                      "block/end_portal_frame_top",
+                                                                      "block/end_portal_frame_side"])
     elif block == "end_rod.json":
-        put_block_into_atlas(block, TYPES["end_rod"], ["block/end_rod"])
+        put_block_into_atlas(data, block, TYPES["end_rod"], ["block/end_rod"])
     elif block == "four_dead_sea_pickles.json":
-        put_block_into_atlas(block, TYPES["four_dead_sea_pickles"], ["block/sea_pickle"])
+        put_block_into_atlas(data, block, TYPES["four_dead_sea_pickles"], ["block/sea_pickle"])
     elif block == "four_sea_pickles.json":
-        put_block_into_atlas(block, TYPES["four_sea_pickles"], ["block/sea_pickle"])
+        put_block_into_atlas(data, block, TYPES["four_sea_pickles"], ["block/sea_pickle"])
     elif block == "grass_block.json":
-        put_block_into_atlas(block, TYPES["grass_block"], ["block/dirt", "block/grass_block_top",
-                                                           "block/grass_block_side"])
+        put_block_into_atlas(data, block, TYPES["grass_block"], ["block/dirt", "block/grass_block_top",
+                                                                 "block/grass_block_side"])
     elif block == "grindstone.json":
-        put_block_into_atlas(block, TYPES["grindstone"], ["block/grindstone_pivot", "block/grindstone_round",
-                                                          "block/grindstone_side", "block/dark_oak_log"])
+        put_block_into_atlas(data, block, TYPES["grindstone"], ["block/grindstone_pivot", "block/grindstone_round",
+                                                                "block/grindstone_side", "block/dark_oak_log"])
     elif block == "honey_block.json":
-        put_block_into_atlas(block, TYPES["honey_block"], ["block/honey_block_bottom", "block/honey_block_top",
-                                                           "block/honey_block_side"])
+        put_block_into_atlas(data, block, TYPES["honey_block"], ["block/honey_block_bottom", "block/honey_block_top",
+                                                                 "block/honey_block_side"])
     elif block == "lectern.json":
-        put_block_into_atlas(block, TYPES["lectern"], ["block/oak_planks", "block/lectern_base",
-                                                       "block/lectern_front", "block/lectern_sides",
-                                                       "block/lectern_top"])
+        put_block_into_atlas(data, block, TYPES["lectern"], ["block/oak_planks", "block/lectern_base",
+                                                             "block/lectern_front", "block/lectern_sides",
+                                                             "block/lectern_top"])
     elif block == "lightning_rod.json" or block == "lightning_rod_on.json":
-        put_block_into_atlas(block, TYPES["lightning_rod"], [data["textures"]["texture"]])
+        put_block_into_atlas(data, block, TYPES["lightning_rod"], [data["textures"]["texture"]])
     elif block == "powder_snow.json":
-        put_block_into_atlas(block, TYPES["powder_snow"], ["block/powder_snow"])
+        put_block_into_atlas(data, block, TYPES["powder_snow"], ["block/powder_snow"])
     elif block == "scaffolding_stable.json" or block == "scaffolding_unstable.json":
-        put_block_into_atlas(block, TYPES["scaffolding"], ["block/scaffolding_top", "block/scaffolding_side",
-                                                           "block/scaffolding_bottom"])
+        put_block_into_atlas(data, block, TYPES["scaffolding"], ["block/scaffolding_top", "block/scaffolding_side",
+                                                                 "block/scaffolding_bottom"])
     elif block == "slime_block.json":
-        put_block_into_atlas(block, TYPES["slime_block"], ["block/slime_block"])
+        put_block_into_atlas(data, block, TYPES["slime_block"], ["block/slime_block"])
     elif block == "small_dripleaf_bottom.json":
-        put_block_into_atlas(block, TYPES["small_dripleaf_bottom"], ["block/small_dripleaf_stem_bottom"])
+        put_block_into_atlas(data, block, TYPES["small_dripleaf_bottom"], ["block/small_dripleaf_stem_bottom"])
     elif block == "small_dripleaf_top.json":
-        put_block_into_atlas(block, TYPES["small_dripleaf_top"], ["block/small_dripleaf_top",
-                                                                  "block/small_dripleaf_side",
-                                                                  "block/small_dripleaf_stem_top"])
+        put_block_into_atlas(data, block, TYPES["small_dripleaf_top"], ["block/small_dripleaf_top",
+                                                                        "block/small_dripleaf_side",
+                                                                        "block/small_dripleaf_stem_top"])
     elif block == "spore_blossom.json":
-        put_block_into_atlas(block, TYPES["spore_blossom"], ["block/spore_blossom",
-                                                             "block/spore_blossom_base"])
+        put_block_into_atlas(data, block, TYPES["spore_blossom"], ["block/spore_blossom",
+                                                                   "block/spore_blossom_base"])
     elif block == "stonecutter.json":
-        put_block_into_atlas(block, TYPES["stonecutter"], ["block/stonecutter_bottom", "block/stonecutter_top",
-                                                           "block/stonecutter_side", "block/stonecutter_saw"])
+        put_block_into_atlas(data, block, TYPES["stonecutter"], ["block/stonecutter_bottom", "block/stonecutter_top",
+                                                                 "block/stonecutter_side", "block/stonecutter_saw"])
     elif block == "three_dead_sea_pickles.json" or block == "three_sea_pickles.json":
-        put_block_into_atlas(block, TYPES["three_sea_pickles"], ["block/sea_pickle"])
+        put_block_into_atlas(data, block, TYPES["three_sea_pickles"], ["block/sea_pickle"])
     elif block == "two_dead_sea_pickles.json" or block == "two_sea_pickles.json":
-        put_block_into_atlas(block, TYPES["two_sea_pickles"], ["block/sea_pickle"])
+        put_block_into_atlas(data, block, TYPES["two_sea_pickles"], ["block/sea_pickle"])
     elif parent in ["cube_all", "leaves", "cube_mirrored_all", "template_four_candles", "template_candle",
                     "template_three_candles", "template_two_candles", "template_four_turtle_eggs",
                     "template_three_turtle_eggs", "template_two_turtle_eggs", "template_turtle_egg"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["all"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["all"]))
     elif parent in ["cube_column", "cube_column_horizontal", "cube_column_mirrored"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["end", "side"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["end", "side"]))
     elif parent in ["button", "button_pressed", "template_fence_gate", "template_fence_gate_open",
                     "template_fence_gate_wall", "template_fence_gate_wall_open", "fence_post", "fence_side",
                     "pressure_plate_up", "pressure_plate_down", "template_orientable_trapdoor_top",
                     "template_orientable_trapdoor_open", "template_orientable_trapdoor_bottom",
                     "template_single_face", "template_chorus_flower", "template_trapdoor_bottom",
                     "template_trapdoor_open", "template_trapdoor_top", "template_seagrass"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["texture"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["texture"]))
     elif parent in ["door_bottom", "door_top"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["top", "bottom"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["top", "bottom"]))
     elif parent in ["cross", "tinted_cross", "pointed_dripstone"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["cross"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["cross"]))
     elif parent in ["slab", "slab_top", "stairs", "inner_stairs", "outer_stairs", "cube_bottom_top"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["bottom", "top", "side"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["bottom", "top", "side"]))
     elif parent in ["rail_flat", "template_rail_raised_ne", "template_rail_raised_sw", "rail_curved"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["rail"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["rail"]))
     elif parent in ["template_wall_post", "template_wall_side", "template_wall_side_tall"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["wall"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["wall"]))
     elif parent in ["template_anvil"]:
-        put_block_into_atlas(block, type_id, ["block/anvil_top", "block/anvil"])
+        put_block_into_atlas(data, block, type_id, ["block/anvil_top", "block/anvil"])
     elif parent in ["stem_fruit", "stem_growth0", "stem_growth1", "stem_growth2", "stem_growth3", "stem_growth4",
                     "stem_growth5", "stem_growth6", "stem_growth7"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["stem"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["stem"]))
     elif parent in ["template_azalea", "template_daylight_detector", "cube_top"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["top", "side"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["top", "side"]))
     elif parent in ["orientable_with_bottom"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["top", "bottom", "side", "front"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["top", "bottom", "side", "front"]))
     elif parent in ["crop"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["crop"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["crop"]))
     elif parent in ["template_cake_with_candle"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["candle", "bottom", "side", "top"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["candle", "bottom", "side", "top"]))
     elif parent in ["carpet"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["wool"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["wool"]))
     elif parent in ["template_glazed_terracotta"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["pattern"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["pattern"]))
     elif parent in ["template_glass_pane_noside", "template_glass_pane_noside_alt"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["pane"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["pane"]))
     elif parent in ["template_glass_pane_post", "template_glass_pane_side", "template_glass_pane_side_alt"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["pane", "edge"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["pane", "edge"]))
     elif parent in ["orientable"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["top", "front", "side"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["top", "front", "side"]))
     elif parent in ["coral_fan", "coral_wall_fan"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["fan"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["fan"]))
     elif parent in ["template_campfire"]:
-        put_block_into_atlas(block, type_id, ["block/campfire_fire", "block/campfire_log_lit",
-                                              "block/campfire_log"])
+        put_block_into_atlas(data, block, type_id, ["block/campfire_fire", "block/campfire_log_lit",
+                                                    "block/campfire_log"])
     elif parent in ["cube", "cube_directional"]:
-        put_block_into_atlas(block, type_id,
+        put_block_into_atlas(data, block, type_id,
                              get_textures(block, data, ["north", "south", "east", "west", "up", "down"]))
     elif parent in ["template_command_block"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["front", "back", "side"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["front", "back", "side"]))
     elif parent in ["orientable_vertical"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["front", "side"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["front", "side"]))
     elif parent in ["template_farmland"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["dirt", "top"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["dirt", "top"]))
     elif parent in ["template_fire_floor", "template_fire_side", "template_fire_side_alt", "template_fire_up",
                     "template_fire_up_alt"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["fire"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["fire"]))
     elif parent in ["template_item_frame", "template_item_frame_map"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["wood", "back"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["wood", "back"]))
     elif parent in ["template_lantern", "template_hanging_lantern"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["lantern"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["lantern"]))
     elif parent in ["template_cauldron_full", "template_cauldron_level1", "template_cauldron_level2"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["content", "inside", "top", "bottom", "side"]))
+        put_block_into_atlas(data, block, type_id,
+                             get_textures(block, data, ["content", "inside", "top", "bottom", "side"]))
     elif parent in ["observer"] or block == "observer.json":
-        put_block_into_atlas(block, type_id,
+        put_block_into_atlas(data, block, type_id,
                              [data["textures"]["bottom"], "block/observer_side", "block/observer_top",
                               "block/observer_front", "block/observer_front"])
     elif parent in ["template_piston"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["platform", "bottom", "side"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["platform", "bottom", "side"]))
     elif parent in ["piston_extended"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["bottom", "side", "inside"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["bottom", "side", "inside"]))
     elif parent in ["template_piston_head", "template_piston_head_short"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["platform", "side", "unsticky"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["platform", "side", "unsticky"]))
     elif parent in ["flower_pot_cross", "tinted_flower_pot_cross"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["plant"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["plant"]))
     elif parent in ["redstone_dust_side", "redstone_dust_side_alt"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["line"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["line"]))
     elif parent in ["template_torch", "template_torch_wall"]:
-        put_block_into_atlas(block, type_id, get_textures(block, data, ["torch"]))
+        put_block_into_atlas(data, block, type_id, get_textures(block, data, ["torch"]))
     elif parent in ["sculk_sensor"]:
-        put_block_into_atlas(block, type_id, [data["textures"]["tendrils"], "block/sculk_sensor_bottom",
-                                              "block/sculk_sensor_side",
-                                              "block/sculk_sensor_tendril_inactive", "block/sculk_sensor_top"])
+        put_block_into_atlas(data, block, type_id, [data["textures"]["tendrils"], "block/sculk_sensor_bottom",
+                                                    "block/sculk_sensor_side",
+                                                    "block/sculk_sensor_tendril_inactive", "block/sculk_sensor_top"])
     else:
         print_error(f"Unknown parent: {parent} (block: {block})")
         print("\tTextures: ", data["textures"] if "textures" in data else "None")
@@ -649,6 +651,7 @@ def process_block(block: str, data: any) -> None:
 
 def main() -> None:
     Path("output/assets/minecraft/models/block").mkdir(parents=True, exist_ok=True)
+    Path("output/assets/minecraft/models/item").mkdir(parents=True, exist_ok=True)
     Path("output/assets/minecraft/textures/block").mkdir(parents=True, exist_ok=True)
     Path("output/assets/minecraft/textures/effect").mkdir(parents=True, exist_ok=True)
 
@@ -659,8 +662,8 @@ def main() -> None:
             continue
 
         with open("data/block_models/" + block) as block_file:
-            block_data = json.load(block_file)
-            process_block(block, block_data)
+            model_data = json.load(block_file)
+            process_block(block, model_data)
 
     atlas.save("output/assets/minecraft/textures/effect/atlas.png")
 
