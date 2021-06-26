@@ -14,7 +14,7 @@ DEFAULT_TYPE_ID = 255
 atlas = Image.new("RGBA", (ATLAS_WIDTH * 16 * 2, ATLAS_HEIGHT * 16 * 2))
 texture_count = 0
 
-replacement_block_model_template_file = open("data/replacement_block_model.json", "r")
+replacement_block_model_template_file = open(os.path.join("data", "replacement_block_model.json"), "r")
 replacement_block_model_template = replacement_block_model_template_file.read()
 replacement_block_model_template_file.close()
 
@@ -374,17 +374,20 @@ def put_block_into_atlas(model_data: any, block: str, type_id: int, textures: li
     start_y = texture_count // ATLAS_WIDTH
 
     replacement = encode_texture_data((start_x, start_y), type_id)
-    replacement.save(f"output/assets/minecraft/textures/block/{block_name}_data.png")
-    with open(f"output/assets/minecraft/models/item/{block_name}.json", "w") as item_file:
+    replacement.save(os.path.join("output", "assets", "minecraft", "textures", "block", f"{block_name}_data.png"))
+    with open(os.path.join("output", "assets", "minecraft", "models", "item", f"{block_name}.json"), "w") as item_file:
         json.dump(model_data, item_file)
 
     model_replacement_content = replacement_block_model_template.replace("$$BLOCK_NAME$$", block_name)
-    model_replacement_file = open(f"output/assets/minecraft/models/block/{block}", "w")
+    model_replacement_file = open(os.path.join("output", "assets", "minecraft", "models", "block", block), "w")
     model_replacement_file.write(model_replacement_content)
     model_replacement_file.close()
 
+    texture_dir_path = os.path.join("data", "assets", "minecraft", "textures")
+
     for texture_path in textures:
-        main_tex = Image.open(f"data/{texture_path}.png").convert("RGBA")
+        main_tex = Image.open(os.path.join(texture_dir_path, f"{texture_path}.png"))\
+            .convert("RGBA")
 
         tint = TINTS.get(texture_path.replace("block/", ""))
         if tint is not None:
@@ -397,14 +400,20 @@ def put_block_into_atlas(model_data: any, block: str, type_id: int, textures: li
         normal_tex = None
         specular_tex = None
         try:
-            normal_tex = Image.open(f"data/{texture_path}_n.png").convert("RGBA").crop((0, 0, 16, 16))
+            normal_tex = Image.open(os.path.join(texture_dir_path, f"{texture_path}_n.png"))\
+                .convert("RGBA")\
+                .crop((0, 0, 16, 16))
         except FileNotFoundError:
-            print(f"[WARN]: No normal for {texture_path}")
+            # There was no normal
+            pass
 
         try:
-            specular_tex = Image.open(f"data/{texture_path}_s.png").convert("RGBA").crop((0, 0, 16, 16))
+            specular_tex = Image.open(os.path.join(texture_dir_path, f"{texture_path}_s.png"))\
+                .convert("RGBA")\
+                .crop((0, 0, 16, 16))
         except FileNotFoundError:
-            print(f"[WARN]: No specular for {texture_path}")
+            # There was no specular
+            pass
 
         x = texture_count % ATLAS_WIDTH
         y = texture_count // ATLAS_WIDTH
@@ -447,8 +456,8 @@ def put_block_into_atlas(model_data: any, block: str, type_id: int, textures: li
 
 def process_block(block: str, data: any) -> None:
     if "parent" not in data:
-        print_error(f"No parent in block {block}")
-        print("\tTextures: ", data["textures"] if "textures" in data else "None")
+        print(f"[WARN] No parent in block {block}")
+        # print("\tTextures: ", data["textures"] if "textures" in data else "None")
         return
 
     parent = data["parent"].replace("minecraft:", "").replace("block/", "")
@@ -649,24 +658,25 @@ def process_block(block: str, data: any) -> None:
         print("\tTextures: ", data["textures"] if "textures" in data else "None")
 
 
-def main() -> None:
-    Path("output/assets/minecraft/models/block").mkdir(parents=True, exist_ok=True)
-    Path("output/assets/minecraft/models/item").mkdir(parents=True, exist_ok=True)
-    Path("output/assets/minecraft/textures/block").mkdir(parents=True, exist_ok=True)
-    Path("output/assets/minecraft/textures/effect").mkdir(parents=True, exist_ok=True)
+def generate() -> None:
+    Path(os.path.join("output", "assets", "minecraft", "models", "block")).mkdir(parents=True, exist_ok=True)
+    Path(os.path.join("output", "assets", "minecraft", "models", "item")).mkdir(parents=True, exist_ok=True)
+    Path(os.path.join("output", "assets", "minecraft", "textures", "block")).mkdir(parents=True, exist_ok=True)
+    Path(os.path.join("output", "assets", "minecraft", "textures", "effect")).mkdir(parents=True, exist_ok=True)
 
-    blocks = os.listdir("data/block_models")
+    block_models_path = os.path.join("data", "assets", "minecraft", "models", "block")
+    blocks = os.listdir(block_models_path)
 
     for block in blocks:
         if block in IGNORE_LIST:
             continue
 
-        with open("data/block_models/" + block) as block_file:
+        with open(os.path.join(block_models_path, block)) as block_file:
             model_data = json.load(block_file)
             process_block(block, model_data)
 
-    atlas.save("output/assets/minecraft/textures/effect/atlas.png")
+    atlas.save(os.path.join("output", "assets", "minecraft", "textures", "effect", "atlas.png"))
 
 
 if __name__ == '__main__':
-    main()
+    generate()
