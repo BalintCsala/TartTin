@@ -92,13 +92,28 @@ def main():
                 return
         else:
             # Folder
+            print("Copying data from resourcepack...")
             shutil.copytree(os.path.join(resourcepack_path, "assets"), os.path.join("data", "assets"),
                             dirs_exist_ok=True)
 
     atlas_generator.generate()
+
+    if "none" not in resourcepack_path:
+        # Copy textures to the appropriate folders to make sure everything works, even if it isn't supported by the
+        # shader
+        shutil.copytree(
+            os.path.join(resourcepack_path, "assets", "minecraft", "textures"),
+            os.path.join("output", "assets", "minecraft", "textures"),
+            dirs_exist_ok=True
+        )
+
     print("Successfully generated files!")
     answer = input("Should VanillaPuddingTart be autoinstalled? (y)es / (n)o: ")
     if "y" in answer:
+        final_path = os.path.join(minecraft_folder, "resourcepacks", "VanillaPuddingTart-main")
+        if os.path.exists(final_path):
+            shutil.rmtree(final_path)
+
         print("Downloading VanillaPuddingTart...")
         vpt = requests.get("https://github.com/BalintCsala/VanillaPuddingTart/archive/refs/heads/main.zip")
         vpt_file_path = os.path.join("data", "vpt.zip")
@@ -111,7 +126,7 @@ def main():
         print("Applying generated resourcepack...")
         shutil.copytree(
             os.path.join("output", "assets"),
-            os.path.join(minecraft_folder, "resourcepacks", "VanillaPuddingTart-main", "assets"),
+            os.path.join(final_path, "assets"),
             dirs_exist_ok=True
         )
         print("Finished")

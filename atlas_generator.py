@@ -1,6 +1,7 @@
 import json
 import math
 import os
+import shutil
 from typing import Optional
 from pathlib import Path
 
@@ -375,8 +376,21 @@ def put_block_into_atlas(model_data: any, block: str, type_id: int, textures: li
 
     replacement = encode_texture_data((start_x, start_y), type_id)
     replacement.save(os.path.join("output", "assets", "minecraft", "textures", "block", f"{block_name}_data.png"))
-    with open(os.path.join("output", "assets", "minecraft", "models", "item", f"{block_name}.json"), "w") as item_file:
-        json.dump(model_data, item_file)
+    original_item_path = os.path.join("data", "assets", "minecraft", "models", "item", f"{block_name}.json")
+    output_item_path = os.path.join("output", "assets", "minecraft", "models", "item", f"{block_name}.json")
+    if not os.path.exists(original_item_path):
+        new_item_contents = model_data
+    else:
+        with open(original_item_path, "r") as item_model:
+            new_item_contents = json.loads(
+                item_model.read().replace(
+                    f"\"parent\": \"minecraft:block/{block_name}",
+                    f"\"parent\": \"minecraft:block/{block_name}_original"
+                )
+            )
+
+    with open(output_item_path, "w") as item_file:
+        json.dump(new_item_contents, item_file)
 
     model_replacement_content = replacement_block_model_template.replace("$$BLOCK_NAME$$", block_name)
     model_replacement_file = open(os.path.join("output", "assets", "minecraft", "models", "block", block), "w")
@@ -659,6 +673,9 @@ def process_block(block: str, data: any) -> None:
 
 
 def generate() -> None:
+    if os.path.exists("output"):
+        shutil.rmtree("output")
+
     Path(os.path.join("output", "assets", "minecraft", "models", "block")).mkdir(parents=True, exist_ok=True)
     Path(os.path.join("output", "assets", "minecraft", "models", "item")).mkdir(parents=True, exist_ok=True)
     Path(os.path.join("output", "assets", "minecraft", "textures", "block")).mkdir(parents=True, exist_ok=True)
@@ -670,8 +687,12 @@ def generate() -> None:
     for block in blocks:
         if block in IGNORE_LIST:
             continue
+        # Copy the block to the output model folder renamed, so we can use it later
+        block_model_path = os.path.join(block_models_path, block)
+        shutil.copy(block_model_path, os.path.join("output", "assets", "minecraft", "models", "block",
+                                                   f"{block.replace('.json', '')}_original.json"))
 
-        with open(os.path.join(block_models_path, block)) as block_file:
+        with open(block_model_path) as block_file:
             model_data = json.load(block_file)
             process_block(block, model_data)
 
