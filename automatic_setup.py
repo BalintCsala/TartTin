@@ -1,3 +1,4 @@
+import math
 import platform
 import os
 from pathlib import Path
@@ -7,6 +8,12 @@ import sys
 import time
 import atlas_generator
 import requests
+
+RESOLUTION_FILES = [
+    os.path.join("assets", "minecraft", "shaders", "include", "utils.glsl"),
+    os.path.join("assets", "minecraft", "shaders", "program", "raytracer.fsh"),
+    os.path.join("assets", "minecraft", "shaders", "program", "raytracer.vsh"),
+]
 
 
 def extract_assets(file_path):
@@ -110,7 +117,8 @@ def main():
     print("Successfully generated files!")
     answer = input("Should VanillaPuddingTart be autoinstalled? (y)es / (n)o: ")
     if "y" in answer:
-        final_path = os.path.join(minecraft_folder, "resourcepacks", "VanillaPuddingTart-main")
+        resourcepack_folder = os.path.join(minecraft_folder, "resourcepacks")
+        final_path = os.path.join(resourcepack_folder, "VanillaPuddingTart-main")
         if os.path.exists(final_path):
             shutil.rmtree(final_path)
 
@@ -122,7 +130,39 @@ def main():
         print("Successfully downloaded VanillaPuddingTart!")
         vpt_zip = ZipFile(vpt_file_path)
         print("Placing VanillaPuddingTart into the resourcepacks folder...")
-        vpt_zip.extractall(os.path.join(minecraft_folder, "resourcepacks"))
+        vpt_zip.extractall(resourcepack_folder)
+
+        edit = input("Do you want to edit the default view distance? (y)es / (n)o: ")
+        if "y" in edit:
+            print("Please enter your game resolution, this isn't always equal to you screen resolution, "
+                  "please refer to the GitHub page, to find the required value")
+            width = int(input("Horizontal resolution: "))
+            height = int(input("Vertical resolution: "))
+
+            max_size = math.floor(pow(width * height, 1 / 3))  # Max possible size, we go down from here
+            for i in range(max_size, 0, -1):
+                if (width // i) * (height // i) > i and i % 2 == 0:
+                    size = i
+                    break
+
+            for file_path in RESOLUTION_FILES:
+                with open(os.path.join(resourcepack_folder, "VanillaPuddingTart-main", file_path), "r+") as code_file:
+                    content = code_file.read()
+                    content = content.replace(
+                        "VOXEL_STORAGE_RESOLUTION = vec2(1024, 705)",
+                        f"VOXEL_STORAGE_RESOLUTION = vec2({width}, {height})"
+                    )
+                    content = content.replace(
+                        "LAYER_SIZE = 88",
+                        f"LAYER_SIZE = {size}"
+                    )
+                    content = content.replace(
+                        "MAX_STEPS = 100",
+                        f"MAX_STEPS = {int(size * 2.5)}"
+                    )
+                    code_file.seek(0)
+                    code_file.write(content)
+
         print("Applying generated resourcepack...")
         shutil.copytree(
             os.path.join("output", "assets"),

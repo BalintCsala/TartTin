@@ -19,8 +19,13 @@ The automatic installer only works if you have Minecraft in the default install 
  5. Run `py automatic_setup.py` or `python automatic_setup.py` or `python3 automatic_setup.py`
  6. When the installer asks for the resourcepack you want to apply, either enter "none" for no resourcepack (This won't allow for any PBR features) or enter the path to the resourcepack you downloaded. If you give it a path to a ZIP file, make sure the zip contains the assets folder at the root directory, otherwise you'll need to extract it somewhere. If you give it a directory path, the same needs to apply. E.g. If the resourcepack is at `C:\MyResourcePack`, there should be a folder with the path `C:\MyResourcePack\assets`
  7. Do as best as you can to ignore the warnings
- 8. When the installer asks you if you want to autoinstall VanillaPuddingTart, say `yes` to let it download it and apply the resourcepack or `no`, if you want to apply it yourself (not recommended)
- 9. Launch the game and activate the resourcepack
+ 8. When the installer asks you if you want to autoinstall VanillaPuddingTart, say `yes` to let it download it and apply the resourcepack (recommended) or `no`, if you want to apply it yourself
+ 9. When the installer asks you if you want to edit the default view distance, say `yes` to let it do that for you (recommended) or `no`, to skip that step
+    1. To find the resolution for this step, first open the game and enter a world
+    2. Make sure the game is at the resolution you will be playing at
+    4. Hit F3 to bring up the debug outputs
+    4. Near the top right corner there should be a line saying `Display: width x height`, `width` is the screen width, `height` is the screen height, you'll need to enter them in this order
+ 10. Launch the game and activate the resourcepack
 
 ### Manual installation
 
