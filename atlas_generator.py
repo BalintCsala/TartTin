@@ -2,8 +2,8 @@ import json
 import math
 import os
 import shutil
-from typing import Optional
 from pathlib import Path
+from typing import Optional, List, Tuple
 
 from PIL import Image
 
@@ -344,8 +344,8 @@ def get_texture(block: str, data: any, name: str) -> Optional[str]:
     return texture_path.replace("minecraft:", "")
 
 
-def get_textures(block: str, data: any, texture_names: list[str]) -> list[str]:
-    result: list[str] = []
+def get_textures(block: str, data: any, texture_names: List[str]) -> List[str]:
+    result: List[str] = []
     for texture_name in texture_names:
         texture = get_texture(block, data, texture_name)
         if texture is not None:
@@ -353,14 +353,14 @@ def get_textures(block: str, data: any, texture_names: list[str]) -> list[str]:
     return result
 
 
-def encode_texture_data(texcoord: tuple[int, int], type_id: int) -> Image:
+def encode_texture_data(texcoord: Tuple[int, int], type_id: int) -> Image:
     r = ((texcoord[0] & 0b111111) << 2) | ((texcoord[1] >> 4) & 0b11)
     g = ((texcoord[1] & 0b1111) << 4) | ((type_id >> 4) & 0b1111)
     b = ((type_id & 0b1111) << 4)  # Last 4 bits are reserved for later
     return Image.new(mode="RGBA", size=(16, 16), color=(r, g, b, 255))
 
 
-def put_block_into_atlas(model_data: any, block: str, type_id: int, textures: list[str]) -> None:
+def put_block_into_atlas(model_data: any, block: str, type_id: int, textures: List[str]) -> None:
     global texture_count, replacement_block_model_template
 
     # If the textures required for this block don't fit into the current line, go immediately to the next line
