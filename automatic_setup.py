@@ -33,6 +33,8 @@ def extract_assets(file_path):
 
 
 def main():
+    success = True
+    minecraft_folder = ""
     if platform.system() == "Windows":
         # Windows
         minecraft_folder = os.path.join(os.getenv("APPDATA"), ".minecraft")
@@ -43,19 +45,22 @@ def main():
         # MacOS
         minecraft_folder = os.path.join(str(Path.home()), "Library", "Application Support", "minecraft")
     else:
-        print("Unknown or misdetected OS, please use the manual installation method!")
-        return
+        print("Unknown or misdetected OS!")
+        success = False
 
-    if not os.path.exists(minecraft_folder):
-        print("Couldn't find the Minecraft folder in the default location, please use the manual installation method!")
-        return
+    if not success or not os.path.exists(minecraft_folder):
+        print("Couldn't find the Minecraft folder in the default location, please enter it manually:")
+        minecraft_folder = input("(The directory should contain the \"versions\" folder): ")
+        if not os.path.exists(minecraft_folder):
+            print("Minecraft couldn't be found in the specified location, please try again or use the manual "
+                  "installation method")
+            return
 
     version_dir = os.path.join(minecraft_folder, "versions")
     versions = [ver for ver in os.listdir(version_dir) if os.path.isdir(os.path.join(version_dir, ver))]
 
     if len(versions) == 0:
-        print("Couldn't find any downloaded Minecraft versions. Please download one using the launcher or use the "
-              "manual installation method!")
+        print("Couldn't find any downloaded Minecraft versions. Please download one using the launcher!")
         return
 
     print("Please select a version (make sure it's an unmodified version and is at least 1.17):")

@@ -3,3 +3,6 @@ data/vpt.zip
 venv
 output
 .idea
+dist/
+build/
+automatic_setup.spec
