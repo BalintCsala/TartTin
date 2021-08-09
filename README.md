@@ -8,7 +8,7 @@ Supports all LabPBR format resource packs
 
 ### Automatic/Magic installation (recommended)
 
-The automatic installer only works if you have Minecraft in the default install location. It can download VanillaPuddingTart and apply a resourcepack for you:
+The automatic installer extracts the vanilla resourcepack, applies another on top, downloads VanillaPuddingTart, edits view distance and applies the pack.
 
  1. If you want to apply a resourcepack, download it first (You can find some at [https://github.com/rre36/lab-pbr/wiki/Resource-Packs](https://github.com/rre36/lab-pbr/wiki/Resource-Packs) or in the ShaderLABS discord)
  2. Download the latest release from the `Releases` tab on the right.
