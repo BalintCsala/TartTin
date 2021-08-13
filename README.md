@@ -11,7 +11,7 @@ Supports all LabPBR format resource packs
 The automatic installer extracts the vanilla resourcepack, applies another on top, downloads VanillaPuddingTart, edits view distance and applies the pack.
 
  1. If you want to apply a resourcepack, download it first (You can find some at [https://github.com/rre36/lab-pbr/wiki/Resource-Packs](https://github.com/rre36/lab-pbr/wiki/Resource-Packs) or in the ShaderLABS discord)
- 2. Download the latest release from the `Releases` tab on the right and extract the folder somewhere. (If you don't want to run an EXE you downloaded from the internet, you can follow the Python version of the automatic installation below)
+ 2. Download the latest release from the `Releases` tab on the right ([link](https://github.com/BalintCsala/TartTin/releases)) and extract the folder somewhere. (If you don't want to run an EXE you downloaded from the internet, you can follow the Python version of the automatic installation below)
  3. When the installer asks for the resourcepack you want to apply, either enter "none" for no resourcepack (This won't allow for any PBR features) or enter the path to the resourcepack you downloaded. If you give it a path to a ZIP file, make sure the zip contains the assets folder at the root directory, otherwise you'll need to extract it somewhere. If you give it a directory path, the same needs to apply. E.g. If the resourcepack is at `C:\MyResourcePack`, there should be a folder with the path `C:\MyResourcePack\assets`
  4. Do as best as you can to ignore the warnings
  5. When the installer asks you if you want to autoinstall VanillaPuddingTart, say `yes` to let it download it and apply the resourcepack (recommended) or `no`, if you want to apply it yourself
