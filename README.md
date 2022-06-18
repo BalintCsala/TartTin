@@ -20,7 +20,7 @@ The automatic installer extracts the vanilla resourcepack, applies another on to
     2. Make sure the game is at the resolution you will be playing at
     4. Hit F3 to bring up the debug outputs
     4. Near the top right corner there should be a line saying `Display: width x height`, `width` is the screen width, `height` is the screen height, you'll need to enter them in this order
- 7. Launch the game and activate the resourcepack
+ 7. Launch the game and activate the resourcepack Be sure to have *fabulous!* graphics selected, or you will see strange artifacts in the world.
 
 ### Automatic installation through the Python version (only recommended if you have Python already installed)
 
@@ -39,7 +39,7 @@ Make sure you have at least Python 3.5 installed.
     2. Make sure the game is at the resolution you will be playing at
     3. Hit F3 to bring up the debug outputs
     4. Near the top right corner there should be a line saying `Display: width x height`, `width` is the screen width, `height` is the screen height, you'll need to enter them in this order
-10. Launch the game and activate the resourcepack
+10. Launch the game and activate the resourcepack. Be sure to have *fabulous!* graphics selected, or you will see strange artifacts in the world.
 
 ### Manual installation (really not recommended)
 
@@ -57,7 +57,7 @@ The instructions are for Windows users, I don't know Macs, so can't check that a
  6. Run `py atlas_generator.py`. Ignore the errors and warnings
  7. Take the `assets` folder and put it inside the VanillaPudingTart folder in your resourcepacks folder (If it asks you about conflicting files, tell it to replace them)
     1. The folder you put the assets folder into should already contain one, the OS will automatically merge them for you
- 8. Launch the game and activate the resource pack    
+ 8. Launch the game and activate the resource pack Be sure to have *fabulous!* graphics selected, or you will see strange artifacts in the world.   
 
 ## Caveats
 
