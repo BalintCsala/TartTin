@@ -33,6 +33,11 @@ def extract_assets(file_path):
 
 
 def main():
+    manual_select = input("(Would you like to manually select the minecraft folder location?) Y/N ")
+    if manual_select.lower() == "y":
+        minecraft_folder = input("(The directory should contain the \"versions\" folder): ")
+    else:
+        pass
     success = True
     minecraft_folder = ""
     if platform.system() == "Windows":
