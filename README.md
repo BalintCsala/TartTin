@@ -1,3 +1,5 @@
+# DEPRECATED, USE THE GUIDE ON MY WEBSITE
+
 # Tart Tin
 
 Resourcepack generator for https://github.com/BalintCsala/VanillaPuddingTart
